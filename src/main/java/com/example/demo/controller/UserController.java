@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,12 +18,15 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
 
     @PostMapping("public/authentication")
     public Object login(@RequestBody String json) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.readTree(json);
-        System.out.println(jsonNode.toPrettyString());
+        System.out.println(passwordEncoder.encode(jsonNode.get("password").toPrettyString()));
 
         return null;
     }
