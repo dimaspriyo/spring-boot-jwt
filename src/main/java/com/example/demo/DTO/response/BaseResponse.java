@@ -7,7 +7,7 @@ import lombok.Data;
 public class BaseResponse {
 
     @JsonProperty("status")
-    private String status;
+    private Boolean status;
 
     @JsonProperty("data")
     private Object data;
