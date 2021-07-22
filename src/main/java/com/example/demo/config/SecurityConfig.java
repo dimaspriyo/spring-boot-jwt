@@ -24,15 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private  JwtAuthFilter jwtAuthFilter;
-
-    public SecurityConfig(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -57,13 +49,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
 
     http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(email -> userRepository.findByEmail(email).orElseThrow(
-                () -> new UsernameNotFoundException("User With Email : %s Not Found")
-        ));
     }
 
     @Bean
